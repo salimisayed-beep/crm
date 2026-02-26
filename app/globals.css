@@ -1523,6 +1523,8 @@ body {
 /* ─────────────────────────────────────────
    RESPONSIVE
 ───────────────────────────────────────── */
+
+/* ── 1200px — collapse KPI to 2-col, insight panel to 2-col ── */
 @media (max-width: 1200px) {
     .kpi-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1534,6 +1536,8 @@ body {
         grid-column: 1 / -1;
     }
 }
+
+/* ── 900px — insight panel single column ── */
 @media (max-width: 900px) {
     .insight-panel {
         grid-template-columns: 1fr;
@@ -1542,22 +1546,394 @@ body {
         grid-column: auto;
     }
 }
+
+/* ── 768px — mobile breakpoint ── */
 @media (max-width: 768px) {
+    /* Remove sidebar offset — mobile uses a drawer instead */
     :root {
         --sidebar-w: 0px;
     }
+
+    /* ── Main content ── */
     .main-content {
-        padding: 52px 14px 16px;
+        padding: 62px 12px 24px;
+        min-width: 0;
     }
-    .kpi-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
+
+    /* ── Header bar ── */
     .header-bar {
         flex-direction: column;
         align-items: flex-start;
+        padding: 14px 16px;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+    .header-actions {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .header-actions .btn {
+        flex: 1 1 auto;
+        justify-content: center;
+        min-width: 0;
+    }
+    .page-title h1 {
+        font-size: 17px;
+    }
+
+    /* ── KPI grid — 2 cols on mobile ── */
+    .kpi-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+    .kpi-card {
+        padding: 16px 14px;
+    }
+    .kpi-value {
+        font-size: 24px;
+    }
+    .kpi-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    /* ── Insight panel ── */
+    .insight-panel {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-bottom: 14px;
+    }
+    .panel-card {
+        padding: 16px 14px;
+    }
+
+    /* ── Table card ── */
+    .table-card {
+        margin-bottom: 14px;
+    }
+    .table-header {
+        padding: 13px 14px 11px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .table-actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    .search-input {
+        width: 100%;
+    }
+
+    /* ── Scrollable tables ── */
+    .data-table {
+        font-size: 12px;
+        min-width: 480px;
+    }
+    .data-table th,
+    .data-table td {
+        padding: 9px 10px;
+    }
+    .table-footer {
+        padding: 10px 14px;
+        font-size: 11px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    /* ── Pagination ── */
+    .pagination {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    .page-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 11px;
+    }
+
+    /* ── Modal ── */
+    .modal-overlay {
+        padding: 0;
+        align-items: flex-end;
+    }
+    .modal {
+        max-width: 100%;
+        width: 100%;
+        border-radius: 20px 20px 0 0;
+        max-height: 92vh;
+    }
+    .modal-header {
+        padding: 16px 18px 14px;
+    }
+    .modal-body {
+        padding: 16px 18px;
+    }
+    .modal-footer {
+        padding: 12px 18px 20px;
+        flex-direction: column-reverse;
+        gap: 8px;
+    }
+    .modal-footer .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* ── Forms ── */
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .form-group.full {
+        grid-column: 1;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+        font-size: 12.5px;
+        padding: 8px 14px;
+    }
+    .btn-sm {
+        padding: 6px 11px;
+        font-size: 11.5px;
+    }
+
+    /* ── Toast ── */
+    .toast-container {
+        bottom: 16px;
+        right: 10px;
+        left: 10px;
+        align-items: stretch;
+    }
+    .toast {
+        min-width: 0;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    /* ── Empty state ── */
+    .empty-state {
+        padding: 36px 16px;
+    }
+}
+
+/* ── 480px — small phones, single-col KPI ── */
+@media (max-width: 480px) {
+    .main-content {
+        padding: 60px 10px 20px;
+    }
+
+    /* Stack KPI cards to single column on very small screens */
+    .kpi-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    .kpi-card {
+        padding: 14px 12px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+    .kpi-icon {
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+    .kpi-label {
+        margin-bottom: 2px;
+    }
+    .kpi-value {
+        font-size: 22px;
+        margin-bottom: 4px;
+    }
+
+    .header-bar {
+        padding: 12px 12px;
+    }
+    .page-title h1 {
+        font-size: 15px;
+        gap: 7px;
+    }
+
+    .panel-card {
+        padding: 14px 12px;
+    }
+
+    /* Status row tighter on tiny screens */
+    .status-row {
+        gap: 6px;
+        margin-bottom: 10px;
+    }
+    .status-label {
+        font-size: 12px;
+    }
+
+    /* Table header tighter */
+    .table-header {
+        padding: 11px 12px 10px;
+    }
+    .table-title {
+        font-size: 10.5px;
+    }
+
+    .data-table {
+        font-size: 11.5px;
+    }
+
+    /* Modal on tiny screens */
+    .modal-header {
+        padding: 14px 14px 12px;
+    }
+    .modal-body {
+        padding: 14px 14px;
+    }
+    .modal-footer {
+        padding: 10px 14px 16px;
+    }
+    .modal-title {
+        font-size: 14px;
+    }
+
+    /* Login card padding */
+    .login-card {
+        padding: 30px 20px;
+        border-radius: 20px;
+    }
+    .login-logo h1 {
+        font-size: 18px;
+    }
+
+    /* Toast */
+    .toast-container {
+        bottom: 10px;
+        right: 8px;
+        left: 8px;
+    }
+    .toast {
+        font-size: 12px;
+        padding: 10px 13px;
+        border-radius: 11px;
+    }
+}
+
+/* ─────────────────────────────────────────
+   RESPONSIVE UTILITY HELPERS
+   Used by settings, users, schema pages
+   that build grids with inline styles.
+───────────────────────────────────────── */
+
+/* Generic 2-col responsive grid used in settings */
+.resp-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+}
+
+/* Role / permission grid used in users page */
+.resp-grid-roles {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+/* Stat / info row used in settings report section */
+.resp-flex-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+    .resp-grid-roles {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    /* Collapse settings 2-col inline grids */
+    .resp-grid-2 {
+        grid-template-columns: 1fr !important;
+        gap: 18px !important;
+    }
+    .resp-grid-roles {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    /* Settings page: any inline-style 2-col grid inside a section card */
+    .main-content [style*="grid-template-columns: 1fr 1fr"],
+    .main-content [style*='gridTemplateColumns: "1fr 1fr"'],
+    .main-content [style*='gridTemplateColumns:"1fr 1fr"'] {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+
+    /* Users page permission table: scroll horizontally */
+    .perm-table-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Section cards on settings / users */
+    .section-card {
+        padding: 18px 14px !important;
+        border-radius: 14px !important;
+    }
+
+    /* Header action row (report actions etc.) */
+    .resp-flex-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .resp-flex-row .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Period selector buttons */
+    .period-btns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .period-btns .btn {
+        flex: 1 1 auto;
+        min-width: 0;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .resp-grid-roles {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    /* Schema / field editor rows */
+    .schema-row {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 8px;
+    }
+    .schema-row .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Users page: user list item */
+    .user-row-actions {
+        flex-direction: column;
+        gap: 6px;
+        align-items: stretch;
+    }
+    .user-row-actions .btn {
+        width: 100%;
+        justify-content: center;
     }
 }
 
