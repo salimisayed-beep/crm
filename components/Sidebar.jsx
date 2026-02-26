@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
 import {
   useState,
   useLayoutEffect,
@@ -132,20 +133,30 @@ function SidebarContent({
           showLabels ? (
             /* Expanded + custom logo → full-width banner */
             <div className="nsb-logo-banner">
-              <img src={logoUrl} alt={siteName || "Logo"} />
+              <Image
+                src={logoUrl}
+                alt={siteName || "Logo"}
+                width={160}
+                height={34}
+                style={{
+                  objectFit: "contain",
+                  objectPosition: "left center",
+                  maxHeight: 34,
+                  width: "auto",
+                }}
+                unoptimized
+              />
             </div>
           ) : (
             /* Collapsed + custom logo → plain image, no gradient box at all */
             <div className="nsb-logo-icon-img">
-              <img
+              <Image
                 src={logoUrl}
                 alt={siteName || "Logo"}
-                style={{
-                  width: "36px",
-                  height: "36px",
-                  objectFit: "contain",
-                  display: "block",
-                }}
+                width={36}
+                height={36}
+                style={{ objectFit: "contain", display: "block" }}
+                unoptimized
               />
             </div>
           )
@@ -342,7 +353,7 @@ export default function Sidebar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const [user, setUser] = useState(null);
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState(getStoredTheme);
   const [logoUrl, setLogoUrl] = useState("");
   const [siteName, setSiteName] = useState("BOMBINO");
 
@@ -354,14 +365,27 @@ export default function Sidebar() {
 
   // ── Sync collapsed → localStorage + --sidebar-w CSS variable ─────────────
   // Pure DOM / storage sync — no setState calls inside.
+  // On mobile (< 768px) the sidebar is always a drawer, so --sidebar-w must
+  // stay at 0px regardless of the collapsed preference stored in localStorage.
   useLayoutEffect(() => {
     try {
       localStorage.setItem("nsb_collapsed", String(collapsed));
     } catch {}
-    document.documentElement.style.setProperty(
-      "--sidebar-w",
-      collapsed ? "68px" : "240px",
-    );
+
+    function applySidebarWidth() {
+      const isMobileView = window.innerWidth < 768;
+      document.documentElement.style.setProperty(
+        "--sidebar-w",
+        isMobileView ? "0px" : collapsed ? "68px" : "240px",
+      );
+    }
+
+    applySidebarWidth();
+
+    // Keep the CSS variable in sync if the user rotates the device or
+    // resizes the browser window across the mobile breakpoint.
+    window.addEventListener("resize", applySidebarWidth);
+    return () => window.removeEventListener("resize", applySidebarWidth);
   }, [collapsed]);
 
   // ── Enable CSS transitions after the first frame ──────────────────────────
@@ -392,11 +416,10 @@ export default function Sidebar() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // ── Init theme from localStorage ──────────────────────────────────────────
+  // ── Apply theme to DOM on mount (theme state already init'd via useState) ─
   useEffect(() => {
-    const stored = getStoredTheme();
-    setTheme(stored);
-    applyTheme(stored);
+    applyTheme(theme);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ── Fetch logged-in user ──────────────────────────────────────────────────

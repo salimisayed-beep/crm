@@ -2,8 +2,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
-export default function LoginForm({ initialLogoUrl = "", initialSiteName = "BOMBINO" }) {
+export default function LoginForm({
+  initialLogoUrl = "",
+  initialSiteName = "BOMBINO",
+}) {
   const router = useRouter();
   const [form, setForm] = useState({ username: "", password: "" });
   const [fieldErrors, setFieldErrors] = useState({});
@@ -88,9 +92,11 @@ export default function LoginForm({ initialLogoUrl = "", initialSiteName = "BOMB
         {/* Logo */}
         <div className="login-logo">
           {logoUrl ? (
-            <img
+            <Image
               src={logoUrl}
               alt={siteName}
+              width={200}
+              height={72}
               style={{
                 maxHeight: 72,
                 maxWidth: 200,
@@ -103,6 +109,7 @@ export default function LoginForm({ initialLogoUrl = "", initialSiteName = "BOMB
                 marginLeft: "auto",
                 marginRight: "auto",
               }}
+              unoptimized
             />
           ) : (
             <div className="login-logo-icon">

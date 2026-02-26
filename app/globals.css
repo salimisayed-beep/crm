@@ -1524,7 +1524,7 @@ body {
    RESPONSIVE
 ───────────────────────────────────────── */
 
-/* ── 1200px — collapse KPI to 2-col, insight panel to 2-col ── */
+/* ── 1200px ── */
 @media (max-width: 1200px) {
     .kpi-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1537,7 +1537,7 @@ body {
     }
 }
 
-/* ── 900px — insight panel single column ── */
+/* ── 900px ── */
 @media (max-width: 900px) {
     .insight-panel {
         grid-template-columns: 1fr;
@@ -1547,17 +1547,29 @@ body {
     }
 }
 
-/* ── 768px — mobile breakpoint ── */
+/* ══════════════════════════════════════════
+   768px — PRIMARY MOBILE BREAKPOINT
+   The JS in layout.tsx also sets
+   --sidebar-w to 0px on mobile, but we use
+   !important on margin-left here so CSS
+   wins even if the JS inline style fires
+   before the resize handler catches up.
+══════════════════════════════════════════ */
 @media (max-width: 768px) {
-    /* Remove sidebar offset — mobile uses a drawer instead */
-    :root {
-        --sidebar-w: 0px;
+    /* ── Force zero sidebar offset no matter what JS set ── */
+    .main-content {
+        margin-left: 0 !important;
+        padding: 64px 14px 28px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
     }
 
-    /* ── Main content ── */
-    .main-content {
-        padding: 62px 12px 24px;
-        min-width: 0;
+    /* ── App shell must not overflow ── */
+    .app-shell {
+        overflow-x: hidden;
+        width: 100%;
     }
 
     /* ── Header bar ── */
@@ -1565,24 +1577,29 @@ body {
         flex-direction: column;
         align-items: flex-start;
         padding: 14px 16px;
-        gap: 12px;
-        margin-bottom: 16px;
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+    .page-title h1 {
+        font-size: 17px;
+        flex-wrap: wrap;
+    }
+    .page-title p {
+        font-size: 11px;
     }
     .header-actions {
         width: 100%;
+        display: flex;
         flex-wrap: wrap;
         gap: 8px;
     }
     .header-actions .btn {
-        flex: 1 1 auto;
+        flex: 1 1 calc(50% - 4px);
         justify-content: center;
         min-width: 0;
     }
-    .page-title h1 {
-        font-size: 17px;
-    }
 
-    /* ── KPI grid — 2 cols on mobile ── */
+    /* ── KPI grid — 2 columns ── */
     .kpi-grid {
         grid-template-columns: 1fr 1fr;
         gap: 10px;
@@ -1590,60 +1607,113 @@ body {
     }
     .kpi-card {
         padding: 16px 14px;
+        min-width: 0;
+        overflow: hidden;
     }
     .kpi-value {
-        font-size: 24px;
+        font-size: 22px;
+    }
+    .kpi-label {
+        font-size: 9.5px;
+        white-space: normal;
+        word-break: break-word;
+    }
+    .kpi-trend {
+        font-size: 10.5px;
+        white-space: normal;
+        word-break: break-word;
     }
     .kpi-icon {
         width: 30px;
         height: 30px;
-        font-size: 13px;
+        font-size: 12px;
         margin-bottom: 10px;
     }
 
-    /* ── Insight panel ── */
+    /* ── Insight panel — single column ── */
     .insight-panel {
         grid-template-columns: 1fr;
         gap: 12px;
         margin-bottom: 14px;
     }
+    .insight-panel .panel-card:last-child {
+        grid-column: auto;
+    }
     .panel-card {
         padding: 16px 14px;
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    /* ── Status rows inside panels ── */
+    .status-row {
+        gap: 6px;
+    }
+    .status-label {
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        min-width: 0;
     }
 
     /* ── Table card ── */
     .table-card {
         margin-bottom: 14px;
+        min-width: 0;
+        overflow: hidden;
     }
     .table-header {
-        padding: 13px 14px 11px;
         flex-direction: column;
         align-items: flex-start;
+        padding: 13px 14px 11px;
         gap: 10px;
+    }
+    .table-title {
+        font-size: 10.5px;
     }
     .table-actions {
         width: 100%;
         flex-wrap: wrap;
+        gap: 8px;
+    }
+    .table-actions .btn {
+        flex: 1 1 auto;
+        justify-content: center;
+    }
+    .search-wrapper {
+        width: 100%;
     }
     .search-input {
         width: 100%;
+        box-sizing: border-box;
+    }
+    .filter-select {
+        width: 100%;
+        box-sizing: border-box;
     }
 
-    /* ── Scrollable tables ── */
+    /* ── Scrollable table wrapper ── */
+    [style*="overflowX: auto"],
+    [style*="overflow-x: auto"] {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
     .data-table {
         font-size: 12px;
-        min-width: 480px;
+        min-width: 500px;
     }
     .data-table th,
     .data-table td {
         padding: 9px 10px;
+        white-space: nowrap;
     }
     .table-footer {
-        padding: 10px 14px;
-        font-size: 11px;
         flex-direction: column;
         align-items: flex-start;
         gap: 4px;
+        padding: 10px 14px;
+        font-size: 11px;
     }
 
     /* ── Pagination ── */
@@ -1655,18 +1725,19 @@ body {
         width: 28px;
         height: 28px;
         font-size: 11px;
+        border-radius: 7px;
     }
 
-    /* ── Modal ── */
+    /* ── Modal — bottom sheet on mobile ── */
     .modal-overlay {
         padding: 0;
         align-items: flex-end;
     }
     .modal {
-        max-width: 100%;
         width: 100%;
-        border-radius: 20px 20px 0 0;
-        max-height: 92vh;
+        max-width: 100%;
+        border-radius: 22px 22px 0 0;
+        max-height: 93vh;
     }
     .modal-header {
         padding: 16px 18px 14px;
@@ -1675,7 +1746,7 @@ body {
         padding: 16px 18px;
     }
     .modal-footer {
-        padding: 12px 18px 20px;
+        padding: 12px 18px 22px;
         flex-direction: column-reverse;
         gap: 8px;
     }
@@ -1692,6 +1763,11 @@ body {
     .form-group.full {
         grid-column: 1;
     }
+    .form-input,
+    .form-select,
+    .form-textarea {
+        font-size: 16px; /* prevent iOS auto-zoom on focus */
+    }
 
     /* ── Buttons ── */
     .btn {
@@ -1699,119 +1775,131 @@ body {
         padding: 8px 14px;
     }
     .btn-sm {
-        padding: 6px 11px;
         font-size: 11.5px;
+        padding: 6px 11px;
     }
 
-    /* ── Toast ── */
+    /* ── Toast — full width at bottom ── */
     .toast-container {
         bottom: 16px;
-        right: 10px;
-        left: 10px;
+        left: 12px;
+        right: 12px;
         align-items: stretch;
     }
     .toast {
         min-width: 0;
         max-width: 100%;
         width: 100%;
+        font-size: 13px;
     }
 
     /* ── Empty state ── */
     .empty-state {
         padding: 36px 16px;
     }
+    .empty-state .empty-icon {
+        font-size: 30px;
+    }
+
+    /* ── Login page ── */
+    .login-card {
+        padding: 32px 22px;
+        border-radius: 22px;
+    }
 }
 
-/* ── 480px — small phones, single-col KPI ── */
+/* ══════════════════════════════════════════
+   480px — SMALL PHONES (iPhone SE etc.)
+══════════════════════════════════════════ */
 @media (max-width: 480px) {
     .main-content {
-        padding: 60px 10px 20px;
+        padding: 60px 10px 24px !important;
     }
 
-    /* Stack KPI cards to single column on very small screens */
-    .kpi-grid {
-        grid-template-columns: 1fr;
-        gap: 8px;
-    }
-    .kpi-card {
-        padding: 14px 12px;
-        display: flex;
-        align-items: center;
-        gap: 14px;
-    }
-    .kpi-icon {
-        margin-bottom: 0;
-        flex-shrink: 0;
-    }
-    .kpi-label {
-        margin-bottom: 2px;
-    }
-    .kpi-value {
-        font-size: 22px;
-        margin-bottom: 4px;
-    }
-
+    /* ── Header ── */
     .header-bar {
-        padding: 12px 12px;
+        padding: 12px;
+        gap: 8px;
     }
     .page-title h1 {
         font-size: 15px;
-        gap: 7px;
+    }
+    .header-actions .btn {
+        flex: 1 1 100%;
     }
 
+    /* ── KPI — stay 2-col but tighter ── */
+    .kpi-grid {
+        gap: 8px;
+    }
+    .kpi-card {
+        padding: 14px 10px;
+    }
+    .kpi-value {
+        font-size: 20px;
+    }
+    .kpi-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 11px;
+        margin-bottom: 8px;
+    }
+    .kpi-label {
+        font-size: 9px;
+        letter-spacing: 0.5px;
+    }
+    .kpi-trend {
+        font-size: 10px;
+    }
+
+    /* ── Panel cards ── */
     .panel-card {
         padding: 14px 12px;
     }
-
-    /* Status row tighter on tiny screens */
-    .status-row {
-        gap: 6px;
-        margin-bottom: 10px;
-    }
-    .status-label {
-        font-size: 12px;
+    .panel-title {
+        font-size: 10px;
+        margin-bottom: 14px;
     }
 
-    /* Table header tighter */
+    /* ── Table ── */
     .table-header {
         padding: 11px 12px 10px;
     }
-    .table-title {
-        font-size: 10.5px;
-    }
 
-    .data-table {
-        font-size: 11.5px;
-    }
-
-    /* Modal on tiny screens */
+    /* ── Modal ── */
     .modal-header {
-        padding: 14px 14px 12px;
+        padding: 14px 16px 12px;
     }
     .modal-body {
-        padding: 14px 14px;
+        padding: 14px 16px;
     }
     .modal-footer {
-        padding: 10px 14px 16px;
+        padding: 10px 16px 18px;
     }
     .modal-title {
         font-size: 14px;
     }
 
-    /* Login card padding */
+    /* ── Login ── */
     .login-card {
-        padding: 30px 20px;
+        padding: 28px 18px;
         border-radius: 20px;
     }
     .login-logo h1 {
         font-size: 18px;
     }
+    .login-logo-icon {
+        width: 52px;
+        height: 52px;
+        font-size: 22px;
+        border-radius: 14px;
+    }
 
-    /* Toast */
+    /* ── Toast ── */
     .toast-container {
-        bottom: 10px;
-        right: 8px;
         left: 8px;
+        right: 8px;
+        bottom: 10px;
     }
     .toast {
         font-size: 12px;

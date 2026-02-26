@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Sidebar from "@/components/Sidebar";
-import { Toast } from "@/components/Toast";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 const PERIODS = [
@@ -73,7 +73,7 @@ export default function SettingsPage() {
         setReportEmail(s.report_email);
         setReportEmailInput(s.report_email);
       }
-    } catch (e) {
+    } catch {
       showToast("Failed to load settings", "error");
     } finally {
       setLoading(false);
@@ -332,15 +332,20 @@ export default function SettingsPage() {
                     >
                       {logoPreview ? (
                         <>
-                          <img
+                          <Image
                             src={logoPreview}
                             alt="Logo preview"
+                            width={200}
+                            height={64}
                             style={{
                               maxHeight: 64,
                               maxWidth: "100%",
                               objectFit: "contain",
                               borderRadius: 8,
+                              width: "auto",
+                              height: "auto",
                             }}
+                            unoptimized
                           />
                           {logoSize && (
                             <div

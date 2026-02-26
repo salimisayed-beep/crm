@@ -262,7 +262,7 @@ function FieldRow({
   onDragOver,
   onDrop,
   onDragEnd,
-  onLabelChange,
+
   onLabelBlur,
   onToggleVisible,
   onToggleRequired,
@@ -569,7 +569,7 @@ export default function SchemaPage() {
       const data = await res.json();
       setFields(data.fields || []);
       setHasChanges(false);
-    } catch (e) {
+    } catch {
       showToast("Failed to load schema", "error");
     } finally {
       setLoading(false);
@@ -1140,7 +1140,7 @@ export default function SchemaPage() {
             </span>
           </div>
           <div style={{ padding: "8px 16px 16px" }}>
-            {coreFields.map((field, i) => {
+            {coreFields.map((field) => {
               // index in full fields array for drag-drop
               const globalIdx = fields.findIndex(
                 (f) => f.field_key === field.field_key,

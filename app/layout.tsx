@@ -37,7 +37,7 @@ export default function RootLayout({
         */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{if(localStorage.getItem('nsb_collapsed')==='true'){document.documentElement.style.setProperty('--sidebar-w','68px')}}catch(e){}})();(function(){try{var t=localStorage.getItem('bombino_theme')||'dark';document.documentElement.setAttribute('data-theme',t)}catch(e){}})();`,
+            __html: `(function(){try{if(window.innerWidth>=768&&localStorage.getItem('nsb_collapsed')==='true'){document.documentElement.style.setProperty('--sidebar-w','68px')}else if(window.innerWidth<768){document.documentElement.style.setProperty('--sidebar-w','0px')}}catch(e){}})();(function(){try{var t=localStorage.getItem('bombino_theme')||'dark';document.documentElement.setAttribute('data-theme',t)}catch(e){}})();`,
           }}
         />
       </head>
